@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from sqlalchemy import update
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 
 from database import get_db
 from models import Inventory, Order
@@ -12,7 +12,7 @@ class OrderCreate(BaseModel):
     user_id:int
     product_id:int
     store_id:int
-    quantity:int
+    quantity:int = Field(gt=0)
 
 @router.post("/orders")
 def place_order(order:OrderCreate, db:Session = Depends(get_db)):
